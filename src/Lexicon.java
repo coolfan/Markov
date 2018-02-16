@@ -16,7 +16,13 @@ public class Lexicon {
 		}
 		
 		Element root = doc.getRootElement();
-		System.out.println(root.getName());
+		Element[] words = root.getChildren().toArray(new Element[0]);
+		
+		Element[] children = words[100000].getChildren().toArray(new Element[0]);
+		
+		Element k_ele = words[100000].getChild("k_ele").getChild("keb");
+		
+		System.out.println(k_ele.getText());
 	}
 	
 	public static void main(String[] args) {
