@@ -18,11 +18,21 @@ public class Lexicon {
 		Element root = doc.getRootElement();
 		Element[] words = root.getChildren().toArray(new Element[0]);
 		
-		Element[] children = words[100000].getChildren().toArray(new Element[0]);
+		Set<String> posCount = new TreeSet<String>();
 		
-		Element k_ele = words[100000].getChild("k_ele").getChild("keb");
+		for (Element word : words) {
+			Element[] senses = word.getChildren("sense").toArray(new Element[0]);
+			for (Element sense : senses) {
+				Element[] poses = sense.getChildren("pos").toArray(new Element[0]);
+				for (Element pos : poses) {
+					posCount.add(pos.getText());
+				}
+			}
+		}
 		
-		System.out.println(k_ele.getText());
+		for (String pos : posCount) {
+			System.out.println(pos);
+		}
 	}
 	
 	public static void main(String[] args) {
