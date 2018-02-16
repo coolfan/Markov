@@ -5,6 +5,9 @@ import java.io.*;
 import java.util.*;
 
 public class Lexicon {
+	
+	private Word[] lexicon;
+	
 	public Lexicon(String filepath) {
 		File lexFile = new File(filepath);
 		SAXBuilder builder = new SAXBuilder();
@@ -18,21 +21,45 @@ public class Lexicon {
 		Element root = doc.getRootElement();
 		Element[] words = root.getChildren().toArray(new Element[0]);
 		
-		Set<String> posCount = new TreeSet<String>();
+		ArrayList<Word> wordlist = new ArrayList<>();
 		
 		for (Element word : words) {
-			Element[] senses = word.getChildren("sense").toArray(new Element[0]);
-			for (Element sense : senses) {
-				Element[] poses = sense.getChildren("pos").toArray(new Element[0]);
-				for (Element pos : poses) {
-					posCount.add(pos.getText());
+			Element[] r_ele = word.getChildren("r_ele").toArray(new Element[0]);
+			Element[] k_ele = word.getChildren("k_ele").toArray(new Element[0]);
+			Element[] sense = word.getChildren("sense").toArray(new Element[0]);
+			
+			String text = "";
+			if (k_ele.length != 0) {
+				text = k_ele[0].getText();
+			} else if (r_ele.length != 0){
+				text = r_ele[0].getText();
+			} else {
+				continue;
+			}
+			
+			Set<String> readings = new TreeSet<>();
+			for (Element e : r_ele) {
+				readings.add(e.getText());
+			}
+			
+			Set<Word.PartOfSpeech> poses = new TreeSet<>();
+			for (Element s : sense) {
+				for (Element pos : s.getChildren("pos")) {
+					Word.PartOfSpeech[] templist = Word.PartOfSpeech.decipher(pos.getText());
+					for (Word.PartOfSpeech p : templist) {
+						poses.add(p);
+					}
 				}
 			}
+			
+			Word w = new Word(text, readings.toArray(new String[0]),
+					poses.toArray(new Word.PartOfSpeech[0]));
+			
+			wordlist.add(w);
 		}
 		
-		for (String pos : posCount) {
-			System.out.println(pos);
-		}
+		lexicon = wordlist.toArray(new Word[0]);
+		System.out.println(lexicon.length);
 	}
 	
 	public static void main(String[] args) {
