@@ -1,7 +1,7 @@
 import java.util.*;
 
-public class Word {
-	public Word(String text, String[] readings, PartOfSpeech[] pos) {
+public class Phrase {
+	public Phrase(String text, String[] readings, PartOfSpeech[] pos) {
 		
 	}
 	

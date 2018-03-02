@@ -7,5 +7,10 @@
 			<attribute name="javadoc_location" value="jar:file:/C:/Users/adqa_/workspace/Markov/jdom-2.0.6-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="kuromoji-0.7.7.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/Users/adqa_/workspace/Markov/kuromoji-0.7.7.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
