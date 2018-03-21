@@ -1,41 +1,46 @@
 import java.util.*;
 
-public class Phrase {
-	public Phrase(String text, String[] readings, PartOfSpeech[] pos) {
-		
+public class Phrase implements Comparable<Phrase> {
+	
+	private String text;
+	private Type type;
+	
+	public Phrase() {
+		text = "";
 	}
 	
-	public static enum PartOfSpeech {
+	public Phrase(String text) {
+		this.text = text;
+	}
+	
+	public void append(String more) {
+		text += more;
+	}
+	
+	public void setType(Type type) {
+		this.type = type;
+	}
+	
+	@Override
+	public String toString() {
+		return text;
+	}
+	
+	public Type getType() {
+		return type;
+	}
+	
+	public enum Type {
+		SUBJECT,
+		OBJECT,
 		VERB,
+		IND_OBJECT,
 		ADJECTIVE,
-		NOUN,
-		ADVERB,
-		OTHER;
-		
-		public static PartOfSpeech[] decipher(String s) {
-			ArrayList<PartOfSpeech> list = new ArrayList<>();
-			
-			if (s.contains("verb")) {
-				list.add(VERB);
-			}
-			
-			if (s.contains("adject")) {
-				list.add(ADJECTIVE);
-			}
-			
-			if (s.contains("adverb")) {
-				list.add(ADVERB);
-			}
-			
-			if (s.contains("noun")) {
-				list.add(NOUN);
-			}
-			
-			if (s.isEmpty()) {
-				list.add(OTHER);
-			}
-			
-			return list.toArray(new PartOfSpeech[0]);
-		}
+		ADVERB
+	}
+
+	@Override
+	public int compareTo(Phrase that) {
+		return this.text.compareTo(that.text);
 	}
 }
