@@ -22,16 +22,17 @@ public class Phrasifier {
 		Phrase toBuild = new Phrase();
 		int state = IDK;
 		for (int i = 0; i < tokens.size(); i++) {
-			String pos = tokens.get(i).getPartOfSpeech();
-			String base = tokens.get(i).getBaseForm();
-			String surface = tokens.get(i).getSurfaceForm();
+			Token cur = tokens.get(i);
+			String pos = cur.getPartOfSpeech();
+			String base = cur.getBaseForm();
+			String surface = cur.getSurfaceForm();
 			
 			if (pos == null || base == null || surface == null) continue;
 			
 			switch (state) {
 			case IDK:
 			{
-				toBuild.append(surface);
+				toBuild.append(cur);
 				
 				if (pos.contains("副詞") || pos.contains("形容") && surface.endsWith("く")) {
 					toBuild.setType(Phrase.Type.ADVERB);
@@ -58,21 +59,21 @@ public class Phrasifier {
 				}
 				if (base.contains("する") || base.contains("いたす")) {
 					state = BUILDING_VERB;
-					toBuild.append(surface);
+					toBuild.append(cur);
 				} else if (pos.contains("名詞") || pos.contains("形容")) {
 					state = BUILDING_NOUN;
-					toBuild.append(surface);
+					toBuild.append(cur);
 				} else if (base.equals("の") || surface.equals("な")) {
 					state = BUILDING_NOUN;
-					toBuild.append(surface);
+					toBuild.append(cur);
 				} else if (pos.contains("動詞")) {
 					toBuild.setType(Phrase.Type.SUBJECT);
 					ret.add(toBuild);
-					toBuild = new Phrase(surface);
+					toBuild = new Phrase(cur);
 					state = BUILDING_VERB;
 				} else if (pos.contains("助")) {
 					state = IDK;
-					toBuild.append(surface);
+					toBuild.append(cur);
 					
 					if (base.equals("は") || base.equals("が") || base.equals("も")) {
 						toBuild.setType(Phrase.Type.SUBJECT);
@@ -93,7 +94,7 @@ public class Phrasifier {
 			{
 				if (pos.contains("名詞")) {
 					state = BUILDING_NOUN;
-					toBuild.append(surface);
+					toBuild.append(cur);
 				} else if (pos.contains("記号")) {
 					toBuild.setType(Phrase.Type.VERB);
 					ret.add(toBuild);
@@ -101,7 +102,7 @@ public class Phrasifier {
 					state = IDK;
 				} else {
 					state = BUILDING_VERB;
-					toBuild.append(surface);
+					toBuild.append(cur);
 				}
 			}
 			break;

@@ -1,29 +1,39 @@
 import java.util.*;
 
+import org.atilika.kuromoji.Token;
+
 public class Phrase implements Comparable<Phrase> {
 	
-	private String text;
+	private ArrayList<Token> text;
+	private String str;
 	private Type type;
 	
 	public Phrase() {
-		text = "";
+		text = new ArrayList<>();
+		str = "";
 	}
 	
-	public Phrase(String text) {
-		this.text = text;
+	public Phrase(Token text) {
+		this();
+		append(text);
 	}
 	
-	public void append(String more) {
-		text += more;
+	public void append(Token more) {
+		text.add(more);
+		str += more.getSurfaceForm();
 	}
 	
 	public void setType(Type type) {
 		this.type = type;
 	}
 	
+	public ArrayList<Token> getTokens() {
+		return text;
+	}
+	
 	@Override
 	public String toString() {
-		return text;
+		return str;
 	}
 	
 	public Type getType() {
@@ -41,6 +51,6 @@ public class Phrase implements Comparable<Phrase> {
 
 	@Override
 	public int compareTo(Phrase that) {
-		return this.text.compareTo(that.text);
+		return this.toString().compareTo(that.toString());
 	}
 }
