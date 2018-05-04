@@ -129,7 +129,11 @@ public class Phrasifier {
 		ArrayList<Token> cleanList = new ArrayList<>();
 		
 		for (Token t : list) {
-			if (!t.getPartOfSpeech().contains("空白") && !t.getPartOfSpeech().contains("括弧")) {
+			if (!t.getPartOfSpeech().contains("空白") 
+					&& !t.getPartOfSpeech().contains("括弧") 
+					&& (t.getBaseForm() != null) 
+					&& !t.getBaseForm().equals("ます") 
+					&& !t.getBaseForm().equals("です")) {
 				cleanList.add(t);
 			}
 		}

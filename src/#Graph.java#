@@ -46,24 +46,16 @@ public class Graph {
 			ArrayList<Node> keyVals = Node.getNodes(phrases.get(i));
 			for (int j = 0; j < keyVals.size(); j++) {
 				Node key = keyVals.get(j);
-				if (j > 0) {
+				if (j != 0) {
 					add(key, keyVals.get(j-1));
 				}
-				
-				if (j > 1) {
-					add(key, keyVals.get(j-2));
-				}
-				
-				if (j < keyVals.size() - 2) {
-					add(key, keyVals.get(j+2));
-				}
 
-				if (j < keyVals.size() - 1) {
+				if (j != keyVals.size() - 1) {
 					add(key, keyVals.get(j+1));
 				}
 			}
 		}
-		
+
 		for (int i = 0; i < phrases.size(); i++) {
 			for (int j = 0; j < phrases.size(); j++) {
 				if (i != j) {
@@ -84,11 +76,11 @@ public class Graph {
 		for (Node n : graph.keySet()) {
 			TreeSet<Node> others = graph.get(n);
 			for (Node o : others) {
-				if (!n.token.getPartOfSpeech().contains("名詞") || !o.token.getPartOfSpeech().contains("形容詞")) {
+				if (!n.token.getPartOfSpeech().contains("名詞") || !o.token.getPartOfSpeech().contains("名詞")) {
 					continue;
 				}
 
-				Link link = new Link(n.token, o.token, (double) o.count / n.count);
+				Link link = new Link(n.token, o.token, (double) o.count);
 				pq.add(link);
 				if (pq.size() > k) {
 					pq.poll();
@@ -174,7 +166,7 @@ public class Graph {
 		}
 
 		/*
-		TreeSet<Node> edgesTo = g.graph.get(g.graph.floorKey(new Node(Utils.toToken("嘘"))));
+		TreeSet<Node> edgesTo = g.graph.get(g.graph.floorKey(new Node(Utils.toToken("食物"))));
 		ArrayList<Node> sorted = new ArrayList<>(edgesTo);
 		Collections.sort(sorted, new Comparator<Node>() {
 
@@ -188,12 +180,12 @@ public class Graph {
 			System.out.println(n.token.getSurfaceForm() + " " + n.count);
 		}
 		 */
-		
+
 		ArrayList<Link> links = g.getTopLinks(100);
 		for (Link l : links) {
-			System.out.println(l.strength + " " + l.left.getBaseForm() + " - " + l.right.getBaseForm());
+			System.out.println(l.strength + " " + l.left.getSurfaceForm() + " - " + l.right.getSurfaceForm());
 		}
-		
+
 		System.out.println("Done");
 	}
 }
